@@ -1,0 +1,109 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.CartPage>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@{ Layout = "master.cshtml"; }
+
+@Html.Partial("~/Views/Partials/SectionHeader.cshtml")
+
+<section class="section">
+
+    <div class="container">
+
+     
+        <div class="col-md-12">
+
+
+            @if (Model != null && Model.Order != null && Model.Order.OrderLines.Count > 0)
+            {
+                using (Html.BeginUmbracoForm("UpdateCart", "CartSurface", FormMethod.Post, new { @class = "theme-light" }))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.ValidationSummary();
+                    var counter = 0;
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width:45%; border: none">Product</th>
+                                <th style="width:10%; border: none">Price</th>
+                                <th style="width:10%; border: none">Quantity</th>
+                                <th style="width:10%; border: none">Total</th>
+                                <th style="width:5%; border: none"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model.Order.OrderLines)
+                            {
+                                <tr scope="row" style="">
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-2 d-none d-xl-block">
+
+                                            </div>
+                                            <div class="col-10">
+                                                <a class="font-weight-bold text-primary" href="#">@item.Name</a>
+                                                <span class="d-block small">@item.Sku</span>
+                                                <div class="mt-3">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Price">
+
+                                        @(item.UnitPrice.Value.Formatted())
+                                    </td>
+                                    <td data-label="Quantity">
+                                        @Html.Hidden($"orderLines[{counter}].Id", item.Id)
+                                        @Html.TextBox($"orderLines[{counter}].Quantity", (int)item.Quantity, new
+                                        {
+                                            @type = "number",
+                                            @class = "form-control w-100 center",
+                                            min = 1,
+                                            max = 10
+                                        })
+
+                                    </td>
+                                    <td data-label="Total">@(item.TotalPrice.Value.Formatted())</td>
+                                    <td>
+                                        <a href="@Url.SurfaceAction("RemoveFromCart", "CartSurface", new { OrderLineId = item.Id })"
+                                           class="btn btn-tertiary remove-button">
+                                            Remove
+                                        </a>
+                                    </td>
+                                </tr>
+                                counter++;
+                            }
+
+                        </tbody>
+                        <tfoot>
+                            <tr scope="row" style="background-color: #FFFFFF;">
+                                <td colspan="1" class="small">Shipping Calculated At Checkout</td>
+                                <td colspan="2"><strong>Sub Total</strong></td>
+                                <td colspan="2"><strong>@(Model.Order.SubtotalPrice.Value.Formatted())</strong></td>
+                            </tr>
+
+                            <tr scope="row" class="update-cart mb-5">
+                                <td colspan="12">
+                                    <div class="mt-33">
+                                        <button id="update-button" class="btn btn-warning">Update</button>
+                                        <a href="@(Model.CheckoutPage.Url())" class="btn btn-tertiary checkout-button">Checkout</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tfoot>
+                    </table>
+                }
+            }
+            else
+            {
+                <div class="alert alert-light-gray center">
+                    Your Cart Is Empty
+                </div>
+            }
+        </div>
+    </div>
+
+</section>
+    
