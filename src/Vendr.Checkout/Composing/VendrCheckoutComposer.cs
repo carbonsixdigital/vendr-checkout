@@ -29,9 +29,10 @@ namespace Vendr.Checkout.Composing
             composition.WithNotificationEvent<OrderShippingMethodChangingNotification>()
                 .RegisterHandler<OrderShippingMethodChangingHandler>();
 
+
             // Register component
             composition.Components()
-                .Append<VendrCheckoutComponent>();
+                    .Append<VendrCheckoutComponent>();
         }
     }
 }
