@@ -10,8 +10,8 @@
         : VendrApi.Instance.GetCurrentFinalizedOrder(store.Id);
 }
 <div>
-    @Html.Partial("Vendr/Partials/VendrCheckoutOrderSummaryToggle", currentOrder)
-    @Html.Partial("Vendr/Partials/VendrCheckoutOrderSummary", currentOrder)
+    @Html.Partial("Vendr/Views/Partials/VendrCheckoutOrderSummaryToggle", currentOrder)
+    @Html.Partial("Vendr/Views/Partials/VendrCheckoutOrderSummary", currentOrder)
     <div id="body" class="relative">
         @RenderBody()
     </div>

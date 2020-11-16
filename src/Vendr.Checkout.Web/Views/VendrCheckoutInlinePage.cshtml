@@ -41,7 +41,7 @@
                     {
                         if (item.Index == 0)
                         {
-                            @Html.Partial("Vendr/Partials/VendrCheckoutInformationEdit")
+                            @Html.Partial("Vendr/Views/Partials/VendrCheckoutInformationEdit")
                         }
                         else
                         {
@@ -54,21 +54,21 @@
                     {
                         if (item.Index == 0)
                         {
-                            @Html.Partial("Vendr/Partials/VendrCheckoutInformationView")
+                            @Html.Partial("Vendr/Views/Partials/VendrCheckoutInformationView")
                         }
                         else if (item.Index == 1)
                         {
-                            @Html.Partial("Vendr/Partials/VendrCheckoutShippingMethodEdit")
+                            @Html.Partial("Vendr/Views/Partials/VendrCheckoutShippingMethodEdit")
                         }
                         else if (item.Index == 2)
                         {
-                            @Html.Partial("Vendr/Partials/VendrCheckoutPaymentMethodEdit")
+                            @Html.Partial("Vendr/Views/Partials/VendrCheckoutPaymentMethodEdit")
                         }
                         else if (item.Index == 3
                             && ((collectShippingInfo && currentOrder.ShippingInfo.ShippingMethodId.HasValue) || !collectShippingInfo)
                             && currentOrder.PaymentInfo.PaymentMethodId.HasValue)
                         {
-                            @Html.Partial("Vendr/Partials/VendrCheckoutReviewEdit")
+                            @Html.Partial("Vendr/Views/Partials/VendrCheckoutReviewEdit")
                         }
                         else
                         {

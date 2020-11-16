@@ -10,7 +10,7 @@
 
     if (allowedPartials.Any(x => x.Equals(partial, StringComparison.InvariantCultureIgnoreCase)))
     {
-        @Html.Partial("Vendr/Partials/" + partial)
+        @Html.Partial("Vendr/Views/Partials/" + partial)
     }
     else
     {
