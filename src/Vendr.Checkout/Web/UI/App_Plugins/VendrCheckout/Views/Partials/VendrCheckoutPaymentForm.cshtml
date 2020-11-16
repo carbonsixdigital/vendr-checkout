@@ -1,6 +1,6 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
 @{
-    var store = Model.GetStore();
+    var store = Vendr.Checkout.Web.PublishedContentExtensions.GetStore(Model);
     var currentOrder = VendrApi.Instance.GetCurrentOrder(store.Id);
 }
 

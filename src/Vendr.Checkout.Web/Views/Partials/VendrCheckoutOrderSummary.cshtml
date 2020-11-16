@@ -1,0 +1,182 @@
+﻿@using Vendr.Checkout.Web;
+@using Umbraco.Web.Composing;
+@inherits UmbracoViewPage
+@{
+    var finalized = (bool)(ViewData["finalized"] ?? false);
+    var canGoBack = (bool)(ViewData["canGoBack"] ?? true);
+
+    var store = Vendr.Checkout.Web.PublishedContentExtensions.GetStore(Model);
+
+    var currentOrder = !finalized
+        ? VendrApi.Instance.GetCurrentOrder(store.Id)
+        : VendrApi.Instance.GetCurrentFinalizedOrder(store.Id);
+
+    var currentPaymentMethod = currentOrder.PaymentInfo.PaymentMethodId.HasValue
+        ? VendrApi.Instance.GetPaymentMethod(currentOrder.PaymentInfo.PaymentMethodId.Value)
+        : null;
+
+    var checkoutPage = Vendr.Checkout.Web.PublishedContentExtensions.GetCheckoutPage(Model);
+    var themeColor = Model.GetThemeColor();
+
+    // If we are on step 2 of the inline checkout, then any ajax
+    // updates should re-fetch the main body so keep step 2
+    // but if we aren't on step 2, set our step to -1 so that
+    // all we fetch is an updated cart summary. We do this
+    // so that if someone is mid way through filling in their
+    // personal details but hasn't saved yet, and redeems a
+    // discount then the changes don't get lost.
+    var ajaxStep = Request.QueryString["step"] == "2" ? 2 : -1;
+}
+<div id="order-summary" class="hidden bg-gray-100 w-full p-8 lg:w-2/5 lg:border-l lg:block">
+
+    <ul>
+        @foreach (var orderLine in currentOrder.OrderLines)
+        {
+            Product product = null;
+
+            if (Guid.TryParse(orderLine.ProductReference, out Guid prodRef))
+            {
+                product = Vendr.Checkout.Web.Extensions.PublishedContentExtensions.GetProduct(Model, prodRef);               
+            }
+
+            <li class="border-b border-gray-300 pb-4 mb-4">
+                <div class="flex items-start">
+
+                    @if (product?.FindImage() != null)
+                    {
+                        <div class="flex flex-shrink-1 flex-grow-0 items-start w-12 mr-5">
+                            <picture>
+                                <source class="product-image" srcset="@(product.FindImage()?.GetCropUrlWithFormat(Enums.Media.WebP))" type="image/webp" alt="@product.FindImage().GetAltText()" />
+                                <img loading="lazy" class="product-image" src="@product.FindImage().GetCropUrlWithFormat()" alt="@product.FindImage().GetAltText()" />
+                            </picture>
+                        </div>
+                    }
+
+                    <div class="flex flex-1 items-start">
+                        <div>
+                            <span class="font-bold">x @((int)orderLine.Quantity)</span><br />
+                            <span class="font-bold">@(orderLine.Name)</span><br />
+                            @*@if (product?.BundledProducts?.Any() ?? false)
+                            {
+                                foreach (var bundledProduct in product.BundledProducts)
+                                {
+                                    <ul class="ml-3">
+                                        <li>
+                                            <span class="text-xs text-gray-900"> @(bundledProduct.FindTitle())</span>
+                                        </li>
+                                    </ul>
+                                }
+                                <br />
+                            }*@
+                            <span class="text-xs text-gray-500">@(orderLine.Sku)</span>
+                        </div>
+                    </div>
+
+                    <div class="pl-4 font-medium price-box-span @(product?.PreviousPrice > 0 ? "previous-price": "" )">
+                        @if (product?.PreviousPrice > 0)
+                        {
+                            <del>@product.PreviousPrice.ToString("C")</del>
+                        }
+                        @(orderLine.TotalPrice.Value.Formatted().WithoutTax)
+
+                    </div>
+
+                </div>
+
+            </li>
+
+        }
+    </ul>
+
+    @if (!currentOrder.IsFinalized)
+    {
+        <div class="pb-4 mb-4 border-b border-gray-300 ">
+            @using (Html.BeginUmbracoForm("ApplyDiscountOrGiftCardCode", "VendrCheckoutSurface", null, new { @class = "flex w-full m-0" }))
+            {
+                @Html.AntiForgeryToken();
+
+                <input type="text" name="code" placeholder="@Umbraco.GetDictionaryValue("Checkout.DiscountGiftCardCodePlaceholder")" class="flex-1 py-2 px-4 border rounded-full placeholder-gray-700" />
+                <div class="w-32 text-right">
+                    <button class="text-black-50 w-20 font-bold px-4 py-3 rounded-full checkout-next-button" type="submit">@Umbraco.GetDictionaryValue("Checkout.ApplyLabel")</button>
+                </div>
+            }
+
+            @if (currentOrder.DiscountCodes.Count > 0 || currentOrder.GiftCards.Count > 0)
+            {
+                <ul class="mt-4 block">
+                    @foreach (var discountCode in currentOrder.DiscountCodes)
+                    {
+                        <li class="inline-block mr-2"><a href="@Url.SurfaceAction("RemoveDiscountOrGiftCardCode",  "VendrCheckoutSurface", new { Code = discountCode.Code })" class="inline-block bg-gray-300 px-2 rounded hover:bg-gray-900 hover:text-white"><i class="fa fa-times mr-1"></i> @discountCode.Code</a></li>
+                    }
+                    @foreach (var giftCard in currentOrder.GiftCards)
+                    {
+                        <li class="inline-block mr-2"><a href="@Url.SurfaceAction("RemoveDiscountOrGiftCardCode",  "VendrCheckoutSurface", new { Code = giftCard.Code })" class="inline-block bg-gray-300 px-2 rounded hover:bg-gray-900 hover:text-white"><i class="fa fa-times mr-1"></i> @giftCard.Code</a></li>
+                    }
+                </ul>
+            }
+        </div>
+    }
+
+    <div class="flex w-full justify-between items-center">
+        <div class="">@Umbraco.GetDictionaryValue("Orders.SubTotalLabel")</div>
+        <div class="font-medium">@(currentOrder.SubtotalPrice.WithoutDiscounts.Formatted().WithoutTax)</div>
+    </div>
+
+    @if (checkoutPage.Value<bool>("vendrCollectShippingInfo"))
+    {
+        var currentShippingMethod = currentOrder.ShippingInfo.ShippingMethodId.HasValue
+        ? VendrApi.Instance.GetShippingMethod(currentOrder.ShippingInfo.ShippingMethodId.Value)
+        : null;
+
+        if (currentShippingMethod != null)
+        {
+            <div class="flex w-full justify-between items-center mt-2">
+                <div class="">
+                    @Umbraco.GetDictionaryValue("Orders.ShippingViaLabel") @(currentShippingMethod.Name)
+                </div>
+                <div class="font-medium">@(currentOrder.ShippingInfo.TotalPrice.WithoutDiscounts.Formatted().WithoutTax)</div>
+            </div>
+        }
+    }
+
+    @*@if (currentPaymentMethod != null && currentPaymentMethod.PaymentProviderAlias != "zeroValue")
+        {
+            <div class="flex w-full justify-between items-center mt-2">
+                <div class="">
+                    @Umbraco.GetDictionaryValue("Orders.PaymentViaLabel") @(currentPaymentMethod.Name)
+                </div>
+                <div class="font-medium">@(currentOrder.PaymentInfo.TotalPrice.WithoutDiscounts.Formatted().WithoutTax)</div>
+            </div>
+        }*@
+
+    @if (currentOrder.TotalPrice.TotalDiscount > 0)
+    {
+        <div class="flex w-full justify-between items-center mt-2 ">
+            <div class="">@Umbraco.GetDictionaryValue("Orders.DiscountsLabel")</div>
+            <div class="font-medium">-@currentOrder.TotalPrice.TotalDiscount.Formatted().WithoutTax</div>
+        </div>
+    }
+
+    <div class="flex w-full justify-between items-center mt-2">
+        <div class="">@Umbraco.GetDictionaryValue("Orders.TaxLabel")</div>
+        <div class="font-medium">@(currentOrder.TotalPrice.Value.Formatted().Tax)</div>
+    </div>
+
+    @if (currentOrder.TotalPrice.GiftCardsAmount.Value > 0)
+    {
+        foreach (var giftCard in currentOrder.GiftCards)
+        {
+            <div class="flex w-full justify-between items-center mt-2">
+                <div class="">@Umbraco.GetDictionaryValue("Orders.GiftCardsLabel") (@(giftCard.Code))</div>
+                <div class="font-medium">-@(giftCard.Amount.Formatted())</div>
+            </div>
+        }
+    }
+
+    <hr class="border-t border-gray-300 my-4" />
+
+    <div class="flex w-full justify-between items-center">
+        <div class="font-medium text-base">@Umbraco.GetDictionaryValue("Orders.TotalLabel")</div>
+        <div class="font-bold text-base">@currentOrder.TotalPrice.Value.Formatted()</div>
+    </div>
+</div>

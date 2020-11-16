@@ -51,8 +51,8 @@
                 }
             </div>
 
-            @Html.Partial("VendrCheckoutOrderSummaryToggle", currentOrder)
-            @Html.Partial("VendrCheckoutOrderSummary", currentOrder)
+            @Html.Partial("VendrCheckoutOrderSummaryToggle", currentOrder as IPublishedContent)
+            @Html.Partial("VendrCheckoutOrderSummary", currentOrder as IPublishedContent)
 
             <div class="bg-white flex-1 p-8">
 
@@ -85,10 +85,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js" integrity="sha384-6UVI3atWyL/qZbDIJb7HW8PyHhFNMiX5rYNY2gAYcaYJjYk5cNIQShSQPBleGMYu" crossorigin="anonymous" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js" integrity="sha384-MT+tfogtcLWmKHg01FWnQ65/uVOFtkzufiT0343NJ94RqvGKewncn108sBC6MqdY" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.9.3/src/toastify.min.js"></script>
     <script src="@Html.Raw("https://unpkg.com/simplestatemanager@4.1.1/dist/ssm.min.js")" integrity="sha384-EsxOqDrrPJp61QayPr8iexFDBrDeCv/JdHkLo4Eim2Z2Bh0xeNBIsgE38jEmUeOg" crossorigin="anonymous" defer></script>
-    <script src="/scripts/vendrcheckoutinline.js" defer></script>
-
+    <script src="~/App_Plugins/VendrCheckout/Scripts/vendrcheckoutinline.js?v=@DateTime.UtcNow.Ticks" defer></script>
+    
     @RenderSection("foot", false)
 
 </body>

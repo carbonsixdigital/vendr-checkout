@@ -20,7 +20,7 @@
     var themeColor = Model.GetThemeColor();
     var collectShippingInfo = checkoutPage.Value<bool>("vendrCollectShippingInfo");
 
-    var step = !Request.QueryString["step"].IsNullOrWhiteSpace()
+    var step = !Request.QueryString["step"].IsNullOrWhiteSpace() 
         ? int.Parse(Request.QueryString["step"])
         : 1;
 
@@ -41,7 +41,7 @@
                     {
                         if (item.Index == 0)
                         {
-                            @Html.Partial("Vendr/Views/Partials/VendrCheckoutInformationEdit")
+                            @Html.Partial("VendrCheckoutInformationEdit")
                         }
                         else
                         {
@@ -54,21 +54,21 @@
                     {
                         if (item.Index == 0)
                         {
-                            @Html.Partial("Vendr/Views/Partials/VendrCheckoutInformationView")
+                            @Html.Partial("VendrCheckoutInformationView")
                         }
                         else if (item.Index == 1)
                         {
-                            @Html.Partial("Vendr/Views/Partials/VendrCheckoutShippingMethodEdit")
+                            @Html.Partial("VendrCheckoutShippingMethodEdit")
                         }
                         else if (item.Index == 2)
                         {
-                            @Html.Partial("Vendr/Views/Partials/VendrCheckoutPaymentMethodEdit")
+                            @Html.Partial("VendrCheckoutPaymentMethodEdit")
                         }
                         else if (item.Index == 3
                             && ((collectShippingInfo && currentOrder.ShippingInfo.ShippingMethodId.HasValue) || !collectShippingInfo)
                             && currentOrder.PaymentInfo.PaymentMethodId.HasValue)
                         {
-                            @Html.Partial("Vendr/Views/Partials/VendrCheckoutReviewEdit")
+                            @Html.Partial("VendrCheckoutReviewEdit")
                         }
                         else
                         {

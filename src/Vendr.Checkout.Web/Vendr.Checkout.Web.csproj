@@ -2978,6 +2978,8 @@
     <Compile Include="Dtos\RemoveFromCartDto.cs" />
     <Compile Include="Dtos\UpdateCartDto.cs" />
     <Compile Include="Extensions\PublishedContentExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Models\Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -3165,9 +3167,6 @@
     <Content Include="Views\Person.cshtml" />
     <Content Include="Views\Product.cshtml" />
     <Content Include="Views\Products.cshtml" />
-    <Content Include="Views\Vendr\Views\Emails\GiftCardEmail.cshtml" />
-    <Content Include="Views\Vendr\Views\Emails\OrderConfirmationEmail.cshtml" />
-    <Content Include="Views\Vendr\Views\Emails\OrderErrorEmail.cshtml" />
     <Content Include="Views\Vendr\Web.config" />
     <Content Include="Views\Vendr\_ViewStart.cshtml" />
     <Content Include="Views\CartPage.cshtml" />
@@ -3176,16 +3175,16 @@
     <Content Include="Views\VendrCheckoutInlineConfirmationPage.cshtml" />
     <Content Include="Views\VendrCheckoutInlineMaster.cshtml" />
     <Content Include="Views\VendrCheckoutInlinePage.cshtml" />
-    <Content Include="Views\Vendr\Views\Partials\VendrCheckoutInformationEdit.cshtml" />
-    <Content Include="Views\Vendr\Views\Partials\VendrCheckoutInformationView.cshtml" />
-    <Content Include="Views\Vendr\Views\Partials\VendrCheckoutOrderInfo.cshtml" />
-    <Content Include="Views\Vendr\Views\Partials\VendrCheckoutOrderSummary.cshtml" />
-    <Content Include="Views\Vendr\Views\Partials\VendrCheckoutOrderSummaryToggle.cshtml" />
-    <Content Include="Views\Vendr\Views\Partials\VendrCheckoutPaymentForm.cshtml" />
-    <Content Include="Views\Vendr\Views\Partials\VendrCheckoutPaymentMethodEdit.cshtml" />
-    <Content Include="Views\Vendr\Views\Partials\VendrCheckoutPrevNext.cshtml" />
-    <Content Include="Views\Vendr\Views\Partials\VendrCheckoutReviewEdit.cshtml" />
-    <Content Include="Views\Vendr\Views\Partials\VendrCheckoutShippingMethodEdit.cshtml" />
+    <Content Include="Views\Partials\VendrCheckoutInformationEdit.cshtml" />
+    <Content Include="Views\Partials\VendrCheckoutInformationView.cshtml" />
+    <Content Include="Views\Partials\VendrCheckoutOrderInfo.cshtml" />
+    <Content Include="Views\Partials\VendrCheckoutOrderSummary.cshtml" />
+    <Content Include="Views\Partials\VendrCheckoutOrderSummaryToggle.cshtml" />
+    <Content Include="Views\Partials\VendrCheckoutPaymentForm.cshtml" />
+    <Content Include="Views\Partials\VendrCheckoutPaymentMethodEdit.cshtml" />
+    <Content Include="Views\Partials\VendrCheckoutPrevNext.cshtml" />
+    <Content Include="Views\Partials\VendrCheckoutReviewEdit.cshtml" />
+    <Content Include="Views\Partials\VendrCheckoutShippingMethodEdit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

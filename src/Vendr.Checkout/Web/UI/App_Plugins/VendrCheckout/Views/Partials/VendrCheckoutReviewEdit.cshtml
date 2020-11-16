@@ -1,18 +1,26 @@
 ﻿@using Newtonsoft.Json;
 @inherits Umbraco.Web.Mvc.UmbracoViewPage
-@{ 
-
+@{
     var themeColor = Model.GetThemeColor();
+    var store = Vendr.Checkout.Web.PublishedContentExtensions.GetStore(Model);   
 }
 <div>
-    <div class="border border-gray-300 rounded mb-4">
-        <label class="flex items-center py-4 px-4 cursor-pointer hover:bg-gray-100">
+    <div class="border border-gray-300 rounded-lg mb-4">
+        <label class="flex items-center cursor-pointer font-bold px-4 py-3">
             <input id="acceptTerms" type="checkbox" value="1" class="mr-3" />
-            <span class="font-medium">I agree and accept the sites terms of service</span>
+            <span class="font-medium">@Html.Raw(Umbraco.GetDictionaryValue("Checkout.IAgreeAndAcceptTheSitesTermsOfServiceLabel"))</span>
         </label>
     </div>
 
-    <button id="continue" data-ajax-pay class="bg-@(themeColor) text-white px-4 py-4 w-full rounded hover:bg-gray-900" type="submit" disabled="disabled">Make Payment</button>
+    <button id="continue-payment" data-ajax-pay class="bg-@(themeColor) text-white px-4 py-4 w-full rounded hover:bg-gray-900" type="submit" disabled="disabled"
+            data-method="ProductCheckout"
+            data-pagetype="@Umbraco.AssignedContentItem.ContentType.Alias"
+            data-currency="@Umbraco.AssignedContentItem.GetCurrency()"
+            data-step="5"
+            data-option="@Umbraco.GetDictionaryValue("Checkout.MakePaymentLabel")"
+            >
+        @Umbraco.GetDictionaryValue("Checkout.MakePaymentLabel")
+        </button>
 
-    <div id="ajax-payment-form" class="hidden"></div>
-</div>
+        <div id="ajax-payment-form" class="hidden"></div>
+    </div>

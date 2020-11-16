@@ -11,7 +11,7 @@ namespace Vendr.Checkout.Web
     {
         public static StoreReadOnly GetStore(this IPublishedContent content)
         {
-            return content.Value<StoreReadOnly>(Constants.Properties.StorePropertyAlias, fallback:Fallback.ToAncestors);
+            return content?.Value<StoreReadOnly>(Constants.Properties.StorePropertyAlias, fallback:Fallback.ToAncestors);
         }
 
         public static IPublishedContent GetCheckoutPage(this IPublishedContent content)

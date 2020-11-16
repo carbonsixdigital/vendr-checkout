@@ -15,29 +15,39 @@
             <div class="col-md-6">
                 <h1>@Model.ProductName</h1>
                 <div class="product-price">
+                    <div class="pl-4 font-medium price-box-span  @(Model?.PreviousPrice > 0 ? "previous-price": "" )">
+                        @if (Model?.PreviousPrice > 0)
+                        {
+                            <del>@Model.PreviousPrice.ToString("C")</del>
+                        }
+                    </div>
+
                     @if (Model.GetStore() != null)
                     {@(Model.CalculatePrice()?.Formatted())}
+
+
+
                 </div>
                 <div class="product-teaser">@Model.Description</div>
                 <div class="product-button">
-                        @using (Html.BeginUmbracoForm("AddToCart", "CartSurface", null, new { style = "display:inline-block;" }))
-                        {
-                            @Html.Hidden("productReference", Model.GetProductReference())
-                            <button class="button button--border--solid" type="submit">
-                                Buy
-                            </button>
-                        }
+                    @using (Html.BeginUmbracoForm("AddToCart", "CartSurface", null, new { style = "display:inline-block;" }))
+                    {
+                        @Html.Hidden("productReference", Model.GetProductReference())
+                        <button class="button button--border--solid" type="submit">
+                            Buy
+                        </button>
+                    }
                 </div>
                 <div class="product-advantages">
                     @if (Model.Features != null)
                     {
                         foreach (var feature in Model.Features)
                         {
-        <div class="product-advantage">
-            <h4>@feature.GetProperty("featureName").Value()</h4>
-            <h5>@feature.GetProperty("featureDetails").Value()</h5>
-        </div>}
-}
+                            <div class="product-advantage">
+                                <h4>@feature.GetProperty("featureName").Value()</h4>
+                                <h5>@feature.GetProperty("featureDetails").Value()</h5>
+                            </div>}
+                    }
                 </div>
             </div>
         </div>
