@@ -25,6 +25,17 @@ namespace Vendr.Checkout.Web.Extensions
             return null;
         }
 
+        public static string FindTitle(this IPublishedContent node, bool navigation = false)
+        {
+            if (node == null) return null;
+            if (navigation && node.HasValue("navigationTitle")) return node.Value<string>("navigationTitle");
+            if (node.HasValue("listingTitle")) return node.Value<string>("listingTitle");
+            if (node.HasValue("title")) return node.Value<string>("title");
+            if (node.HasValue("headline")) return node.Value<string>("headline");
+            return node.Name;
+        }
+
+
         public static string GetCropUrlWithFormat(
           this IPublishedContent node,
           Enums.CropAlias cropAlias,

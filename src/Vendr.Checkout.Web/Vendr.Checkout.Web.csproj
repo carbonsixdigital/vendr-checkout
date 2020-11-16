@@ -536,7 +536,9 @@
     <Content Include="Media\v0ablens\18095416144_44a566a5f4_h.jpg" />
     <Content Include="Media\we2ksuen\7377957524_347859faac_b.jpg" />
     <Content Include="Media\ywgboki0\4730684907_8a7f8759cb_b.jpg" />
+    <Content Include="scripts\datalayer.js" />
     <Content Include="scripts\umbraco-starterkit-app.js" />
+    <Content Include="scripts\vendrcheckoutinline.js" />
     <Content Include="Umbraco\assets\css\canvasdesigner.css" />
     <Content Include="Umbraco\assets\css\installer.css" />
     <Content Include="Umbraco\assets\css\nonodes.style.min.css" />
@@ -2968,6 +2970,7 @@
     <Compile Include="App_Data\Models\NavigationBase.generated.cs" />
     <Compile Include="App_Data\Models\People.generated.cs" />
     <Compile Include="App_Data\Models\Person.generated.cs" />
+    <Compile Include="App_Data\Models\Product.cs" />
     <Compile Include="App_Data\Models\Product.generated.cs" />
     <Compile Include="App_Data\Models\Products.generated.cs" />
     <Compile Include="App_Data\Models\VendrCheckoutBasePage.generated.cs" />
@@ -2980,6 +2983,7 @@
     <Compile Include="Extensions\PublishedContentExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\ProductDataLayerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

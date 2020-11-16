@@ -6,17 +6,42 @@
     ViewData["finalized"] = true;
     ViewData["canGoBack"] = false;
 
-    var store = Model.GetStore();
+    var store = Vendr.Checkout.Web.PublishedContentExtensions.GetStore(Model);
     var currentOrder = VendrApi.Instance.GetCurrentFinalizedOrder(store.Id);
 
     var themeColor = Model.GetThemeColor();
 }
 
-<div class="border border-gray-300 p-6 rounded mb-8 text-center">
+<div class="border border-gray-300 p-6 rounded-lg mb-8 text-center">
     <span class="inline-flex items-center justify-center text-6xl border-2 border-green-500 rounded-full mb-4 w-24 h-24"><i class="fa fa-check text-green-500"></i></span>
-    <h3 class="text-xl font-medium mb-4">Thank you for your order #@(currentOrder.OrderNumber ?? currentOrder.CartNumber)</h3>
-    <p class="mb-4">A confirmation email has been sent to <strong>@(currentOrder.CustomerInfo.Email)</strong></p>
-    <p><a href="/" class="inline-block bg-@(themeColor) text-white px-4 py-4 rounded hover:bg-gray-900">Return to Store</a></p>
+    <h3 class="text-xl font-medium mb-4">@Umbraco.GetDictionaryValue("Checkout.ThankYouForYourOrderLabel") #@(currentOrder.OrderNumber ?? currentOrder.CartNumber)</h3>
+    <p class="mb-4">@Umbraco.GetDictionaryValue("Checkout.AConfirmationEmailHasBeenSentToLabel") <strong>@(currentOrder.CustomerInfo.Email)</strong></p>
+    <p><a href="@(Model.GetHomepage()?.Url)" class="inline-block checkout-next-button font-bold text-black px-4 py-4 rounded-full">@Umbraco.GetDictionaryValue("Checkout.ReturnToStoreLabel")</a></p>
 </div>
 
 @Html.VendrCheckoutPartial("VendrCheckoutOrderInfo", currentOrder)
+
+@{
+    var productsDto = new List<ProductDataLayerModel>();
+    foreach (var item in currentOrder.OrderLines.Select((value, index) => new { index, value }))
+    {
+        Product product = null;
+        if (Guid.TryParse(item.value.ProductReference, out Guid prodRef))
+        {
+            product = Vendr.Checkout.Web.Extensions.PublishedContentExtensions.GetProduct(Model, prodRef);
+            if (product != null)
+            {
+                productsDto.Add(new ProductDataLayerModel(product, item.index, "Order Confirmation"));
+            }
+        }
+    }
+}
+<div class="d-none"
+     data-method="ProductPurchase"
+     data-pagetype="@Model.ContentType.Alias"
+     data-currency="@Model.GetCurrency()"
+     data-products='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(productsDto))'
+     data-orderid="@(currentOrder.OrderNumber ?? currentOrder.CartNumber)"
+     data-totalamount="@currentOrder.TotalPrice.Value.WithTax.ToString("0.00")"
+     data-coupon="@string.Join(",", currentOrder.DiscountCodes.Select(x => x.Code))">
+</div>

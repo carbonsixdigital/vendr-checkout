@@ -91,7 +91,7 @@
                                            data-method="RemoveFromCart"
                                            data-pagetype="@Umbraco.AssignedContentItem.ContentType.Alias"
                                            data-currency="@Umbraco.AssignedContentItem.GetCurrency()"
-                                           @*data-products='@Html.Raw(product.DataLayeritemJson(item.value.Index, "Cart"))'*@
+                                           data-products='@Html.Raw(product.DataLayerModelJson(item.index, "Cart"))'
                                            data-list="Cart Listing">
                                             @Umbraco.GetDictionaryValue("Orders.RemoveLabel")
                                         </a>

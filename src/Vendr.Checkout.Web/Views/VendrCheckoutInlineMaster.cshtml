@@ -1,7 +1,7 @@
 ﻿@inherits UmbracoViewPage
 @{
     Layout = null;
-    
+
     var finalized = (bool)(ViewData["finalized"] ?? false);
     var canGoBack = (bool)(ViewData["canGoBack"] ?? true);
 
@@ -13,9 +13,24 @@
     var checkoutPage = Model.GetCheckoutPage();
     var themeColor = Model.GetThemeColor();
 
+    var googleTagManagerCode = "";
+
 }
 <html lang="en">
 <head>
+    @if (!string.IsNullOrWhiteSpace(googleTagManagerCode))
+    {
+        <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', '@googleTagManagerCode');</script>
+    }
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -25,13 +40,22 @@
     <meta name="robots" content="noindex, nofollow" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet" >
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
     <script>
         var pageId = @(Model.Id);
     </script>
     @RenderSection("head", false)
 </head>
 <body>
+    @if (!string.IsNullOrWhiteSpace(googleTagManagerCode))
+    {
+        <!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=@googleTagManagerCode"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    }
     <div class="relative text-sm">
 
         <!-- Faux column -->
@@ -87,8 +111,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js" integrity="sha384-6UVI3atWyL/qZbDIJb7HW8PyHhFNMiX5rYNY2gAYcaYJjYk5cNIQShSQPBleGMYu" crossorigin="anonymous" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.9.3/src/toastify.min.js"></script>
     <script src="@Html.Raw("https://unpkg.com/simplestatemanager@4.1.1/dist/ssm.min.js")" integrity="sha384-EsxOqDrrPJp61QayPr8iexFDBrDeCv/JdHkLo4Eim2Z2Bh0xeNBIsgE38jEmUeOg" crossorigin="anonymous" defer></script>
-    <script src="~/App_Plugins/VendrCheckout/Scripts/vendrcheckoutinline.js?v=@DateTime.UtcNow.Ticks" defer></script>
-    
+    @if (!string.IsNullOrWhiteSpace(googleTagManagerCode))
+    {
+        <script src="~/Scripts/datalayer.js?v=@DateTime.UtcNow.Ticks" defer></script>
+    }
+    <script src="~/Scripts/vendrcheckoutinline.js?v=@DateTime.UtcNow.Ticks" defer></script>
+
     @RenderSection("foot", false)
 
 </body>
