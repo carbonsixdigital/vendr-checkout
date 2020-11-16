@@ -74,10 +74,12 @@
                                                                         <picture>
                                                                             <source class="product-image-cart float-left"
                                                                                     srcset="@bundledProduct.FindImage().GetCropUrlWithFormat(Enums.CropAlias.NoCrop, Enums.Media.WebP)"
-                                                                                    type="image/webp" alt="@bundledProduct.FindImage().GetAltText()">
+                                                                                    type="image/webp" alt="@bundledProduct.FindImage().GetAltText()"
+                                                                                    style="width:75px;">
                                                                             <img loading="lazy" class="product-image-cart float-left"
                                                                                  src="@bundledProduct.FindImage().GetCropUrlWithFormat(Enums.CropAlias.NoCrop)"
-                                                                                 alt="@bundledProduct.FindImage().GetAltText()">
+                                                                                 alt="@bundledProduct.FindImage().GetAltText()"
+                                                                                 style="width:75px;">
                                                                         </picture>
                                                                     }
                                                                 </div>
