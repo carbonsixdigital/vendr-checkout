@@ -36,7 +36,7 @@
 
             if (Guid.TryParse(orderLine.ProductReference, out Guid prodRef))
             {
-                product = Vendr.Checkout.Web.Extensions.PublishedContentExtensions.GetProduct(Model, prodRef);               
+                product = Vendr.Checkout.Web.Extensions.PublishedContentExtensions.GetProduct(Model, prodRef);
             }
 
             <li class="border-b border-gray-300 pb-4 mb-4">
@@ -56,7 +56,8 @@
                         <div>
                             <span class="font-bold">x @((int)orderLine.Quantity)</span><br />
                             <span class="font-bold">@(orderLine.Name)</span><br />
-                            @*@if (product?.BundledProducts?.Any() ?? false)
+
+                            @if (product.IsBundle)
                             {
                                 foreach (var bundledProduct in product.BundledProducts)
                                 {
@@ -67,7 +68,7 @@
                                     </ul>
                                 }
                                 <br />
-                            }*@
+                            }
                             <span class="text-xs text-gray-500">@(orderLine.Sku)</span>
                         </div>
                     </div>
