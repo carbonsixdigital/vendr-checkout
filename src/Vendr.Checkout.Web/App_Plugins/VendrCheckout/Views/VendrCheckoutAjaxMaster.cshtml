@@ -1,0 +1,18 @@
+﻿@inherits UmbracoViewPage
+@{
+    Layout = null;
+
+    var finalized = (bool)(ViewData["finalized"] ?? false);
+
+    var store = Model.GetStore();
+    var currentOrder = !finalized
+        ? VendrApi.Instance.GetCurrentOrder(store.Id)
+        : VendrApi.Instance.GetCurrentFinalizedOrder(store.Id);
+}
+<div>
+    @Html.Partial("VendrCheckoutOrderSummaryToggle", currentOrder)
+    @Html.Partial("VendrCheckoutOrderSummary", currentOrder)
+    <div id="body" class="relative">
+        @RenderBody()
+    </div>
+</div>

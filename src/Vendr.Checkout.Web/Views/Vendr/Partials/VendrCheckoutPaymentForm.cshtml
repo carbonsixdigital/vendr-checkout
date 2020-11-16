@@ -1,0 +1,10 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+    var store = Model.GetStore();
+    var currentOrder = VendrApi.Instance.GetCurrentOrder(store.Id);
+}
+
+@using (Html.BeginPaymentForm(currentOrder, new { @class = "hidden" }))
+{
+    @Html.AntiForgeryToken();
+}

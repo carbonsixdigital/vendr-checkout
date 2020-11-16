@@ -1,0 +1,22 @@
+﻿@{
+    Layout = null;
+
+    var allowedPartials = new[]
+    {
+        "VendrCheckoutPaymentForm"
+    };
+
+    var partial = Request.QueryString["partial"];
+
+    if (allowedPartials.Any(x => x.Equals(partial, StringComparison.InvariantCultureIgnoreCase)))
+    {
+        @Html.Partial("Vendr/Partials/" + partial)
+    }
+    else
+    {
+        Response.Status = "404 Not Found";
+        Response.StatusCode = 404;
+        Response.End();
+        return;
+    }
+}

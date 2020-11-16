@@ -11,14 +11,9 @@ namespace Vendr.Checkout.Web.Extensions
     {     
         public static Home GetHomepage(this IPublishedContent content)
             => content.AncestorOrSelf<Home>();      
-        public static VendrCheckoutCheckoutPage GetCheckoutPage(this IPublishedContent content)
-            => content.GetHomepage()?.FirstChild<VendrCheckoutCheckoutPage>(x => x.IsPublished());
-
+          
         public static CartPage GetCartPage(this IPublishedContent content)
             => content.GetHomepage()?.FirstChild<CartPage>(x => x.IsPublished() && x.TemplateId > 0);
-
-        public static StoreReadOnly GetStore(this IPublishedContent content)
-            => content.GetHomepage()?.Store;
 
         public static OrderReadOnly GetCurrentOrder(this IPublishedContent content)
             => content.GetStore() != null ? VendrApi.Instance?.GetCurrentOrder(content.GetStore().Id) : null;

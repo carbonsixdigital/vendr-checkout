@@ -1,0 +1,84 @@
+﻿@using Newtonsoft.Json;
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+    Layout = Request.QueryString["step"].IsNullOrWhiteSpace()
+        ? "VendrCheckoutInlineMaster.cshtml"
+        : "VendrCheckoutAjaxMaster.cshtml";
+
+    var finalized = (bool)(ViewData["finalized"] ?? false);
+    var canGoBack = (bool)(ViewData["canGoBack"] ?? true);
+
+    var store = Model.GetStore();
+    var currentOrder = !finalized
+        ? VendrApi.Instance.GetCurrentOrder(store.Id)
+        : VendrApi.Instance.GetCurrentFinalizedOrder(store.Id);
+    var currentPaymentMethod = currentOrder.PaymentInfo.PaymentMethodId.HasValue
+        ? VendrApi.Instance.GetPaymentMethod(currentOrder.PaymentInfo.PaymentMethodId.Value)
+        : null;
+
+    var checkoutPage = Model.GetCheckoutPage();
+    var themeColor = Model.GetThemeColor();
+    var collectShippingInfo = checkoutPage.Value<bool>("vendrCollectShippingInfo");
+
+    var step = !Request.QueryString["step"].IsNullOrWhiteSpace()
+        ? int.Parse(Request.QueryString["step"])
+        : 1;
+
+    if (step > 0)
+    {
+        <div data-overlay class="bg-white absolute top-0 left-0 right-0 bottom-0 opacity-75 hidden" onclick="function (e) { e.stopPropagation(); }"></div>
+
+        foreach (var item in checkoutPage.Children
+            .Where(x => checkoutPage.Value<bool>("vendrCollectShippingInfo") || x.Value<string>("vendrStepType") != "ShippingMethod")
+            .Select((s, i) => new { Step = s, Index = i }))
+        {
+            <div class="border border-gray-300 rounded mt-4 p-4"
+                 data-checkout-step="@(item.Index + 1)"
+                 data-checkout-edit-partial="VendrCheckout@(item.Step.Value<string>("vendrStepType"))Edit"
+                 data-checkout-view-partial="VendrCheckout@(item.Step.Value<string>("vendrStepType"))View">
+                <div>
+                    @if (step == 1)
+                    {
+                        if (item.Index == 0)
+                        {
+                            @Html.Partial("Vendr/Partials/VendrCheckoutInformationEdit")
+                        }
+                        else
+                        {
+                            <div class="font-bold text-gray-400">
+                                @(item.Step.Value<string>("vendrShortStepName", defaultValue: item.Step.Name))
+                            </div>
+                        }
+                    }
+                    else if (step == 2)
+                    {
+                        if (item.Index == 0)
+                        {
+                            @Html.Partial("Vendr/Partials/VendrCheckoutInformationView")
+                        }
+                        else if (item.Index == 1)
+                        {
+                            @Html.Partial("Vendr/Partials/VendrCheckoutShippingMethodEdit")
+                        }
+                        else if (item.Index == 2)
+                        {
+                            @Html.Partial("Vendr/Partials/VendrCheckoutPaymentMethodEdit")
+                        }
+                        else if (item.Index == 3
+                            && ((collectShippingInfo && currentOrder.ShippingInfo.ShippingMethodId.HasValue) || !collectShippingInfo)
+                            && currentOrder.PaymentInfo.PaymentMethodId.HasValue)
+                        {
+                            @Html.Partial("Vendr/Partials/VendrCheckoutReviewEdit")
+                        }
+                        else
+                        {
+                            <div class="font-bold text-gray-400">
+                                @(item.Step.Value<string>("vendrShortStepName", defaultValue: item.Step.Name))
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    }
+}

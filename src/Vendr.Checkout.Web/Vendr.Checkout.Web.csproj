@@ -375,6 +375,7 @@
     <Content Include="App_Plugins\VendrCheckout\Config\vendrcheckout.order.editor.config.js" />
     <Content Include="App_Plugins\VendrCheckout\Lang\en-US.xml" />
     <Content Include="App_Plugins\VendrCheckout\Scripts\vendrcheckout.js" />
+    <Content Include="App_Plugins\VendrCheckout\Scripts\vendrcheckoutinline.js" />
     <Content Include="App_Plugins\Vendr\assets\fonts\vendr.svg" />
     <Content Include="App_Plugins\Vendr\assets\images\vendr-bg.png" />
     <Content Include="App_Plugins\Vendr\assets\images\vendr-logo.png" />
@@ -3020,6 +3021,19 @@
     <Content Include="App_Plugins\uSync8\package.manifest" />
     <Content Include="App_Plugins\uSync8\addons.json" />
     <Content Include="App_Plugins\Vendr.uSync\package.manifest" />
+    <Content Include="App_Plugins\VendrCheckout\Views\Partials\VendrCheckoutInformationEdit.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\Partials\VendrCheckoutInformationView.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\Partials\VendrCheckoutOrderSummary.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\Partials\VendrCheckoutOrderSummaryToggle.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\Partials\VendrCheckoutPaymentForm.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\Partials\VendrCheckoutPaymentMethodEdit.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\Partials\VendrCheckoutReviewEdit.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\Partials\VendrCheckoutShippingMethodEdit.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\VendrCheckoutAjaxMaster.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\VendrCheckoutAjaxPartial.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\VendrCheckoutInlineConfirmationPage.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\VendrCheckoutInlineMaster.cshtml" />
+    <Content Include="App_Plugins\VendrCheckout\Views\VendrCheckoutInlinePage.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Partials\Grid\Editors\Textstring.cshtml" />
@@ -3157,6 +3171,21 @@
     <Content Include="Views\Vendr\Web.config" />
     <Content Include="Views\Vendr\_ViewStart.cshtml" />
     <Content Include="Views\CartPage.cshtml" />
+    <Content Include="Views\VendrCheckoutAjaxMaster.cshtml" />
+    <Content Include="Views\VendrCheckoutAjaxPartial.cshtml" />
+    <Content Include="Views\VendrCheckoutInlineConfirmationPage.cshtml" />
+    <Content Include="Views\VendrCheckoutInlineMaster.cshtml" />
+    <Content Include="Views\VendrCheckoutInlinePage.cshtml" />
+    <Content Include="Views\Vendr\Partials\VendrCheckoutInformationEdit.cshtml" />
+    <Content Include="Views\Vendr\Partials\VendrCheckoutInformationView.cshtml" />
+    <Content Include="Views\Vendr\Partials\VendrCheckoutOrderInfo.cshtml" />
+    <Content Include="Views\Vendr\Partials\VendrCheckoutOrderSummary.cshtml" />
+    <Content Include="Views\Vendr\Partials\VendrCheckoutOrderSummaryToggle.cshtml" />
+    <Content Include="Views\Vendr\Partials\VendrCheckoutPaymentForm.cshtml" />
+    <Content Include="Views\Vendr\Partials\VendrCheckoutPaymentMethodEdit.cshtml" />
+    <Content Include="Views\Vendr\Partials\VendrCheckoutPrevNext.cshtml" />
+    <Content Include="Views\Vendr\Partials\VendrCheckoutReviewEdit.cshtml" />
+    <Content Include="Views\Vendr\Partials\VendrCheckoutShippingMethodEdit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
